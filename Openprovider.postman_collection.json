@@ -1,0 +1,58 @@
+{
+	"info": {
+		"name": "Openprovider",
+		"_postman_id": "56504537-179b-a875-cae4-da33eabd4e02",
+		"description": "RESTapi endpoints calls for openprovider backend ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getTribonachi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/openprovider/tribonachi/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"openprovider",
+						"tribonachi",
+						"10"
+					]
+				},
+				"description": "get tribonachi value by arg"
+			},
+			"response": []
+		},
+		{
+			"name": "sayHello",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/openprovider",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"openprovider"
+					]
+				},
+				"description": "get tribonachi value by arg"
+			},
+			"response": []
+		}
+	]
+}
