@@ -7,11 +7,15 @@ import (
 	"strconv"
 	"encoding/json"
 	"openprovider-back/go/models"
+	"math"
+	"errors"
 )
 
 type Users struct {
 
 }
+
+var ErrorOverflow = errors.New("unit64 overflow")
 
 func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
@@ -28,7 +32,15 @@ func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		result := tribonacciThroughCache(argument)
+		result, err := tribonacciThroughCache(argument)
+		if err != nil {
+			w.WriteHeader(http.StatusRequestedRangeNotSatisfiable)
+			e := models.ErrorMessage{ Code: "416", Message: "Argument too big"}
+			errorMessage, _ := json.Marshal(e)
+			http.Error(w, string(errorMessage) , http.StatusRequestedRangeNotSatisfiable)
+			return
+		}
+
 
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, result)
@@ -40,43 +52,29 @@ func obtainArgument(path string) (int, error) {
 	return strconv.Atoi(lastFragment)
 }
 
-func tribonacciThroughCache(argument int ) string {
+func tribonacciThroughCache(argument int ) (string, error) {
 
-	//==== выбрать нужный метод вычисления ====
-	//result := tribonacciRecursive(argument)
-	result := tribonacсiItero(argument)
+	//TODO some cache checking (не реализовано)
 
-	return  strconv.Itoa(result)
+	result, err := tribonacciIteroOverflowProtected(argument)
+
+	return  strconv.FormatUint(result, 10), err
 }
 
-func tribonacciRecursive(argument int) int {
+func tribonacciIteroOverflowProtected(argument int) (uint64, error)  {
+	var first uint64 = 0
+	var second uint64 = 1
+	var third uint64 = 1
+	var tmp uint64
 
 	if argument == 0 {
-		return 0
-	}else if argument == 1{
-		return 0
-	} else if argument == 2{
-		return 0
-	} else if argument == 3{
-		return 1
-	} else{
-		return  tribonacciRecursive(argument - 1) + tribonacciRecursive(argument - 2) + tribonacciRecursive(argument -3)
-	}
-}
-
-func tribonacсiItero(argument int) int {
-	var first = 0
-	var second = 0
-	var third = 1
-
-	if argument == 0 {
-		return 0
+		return 0, nil
 	}else if argument == 1 {
-		return first
+		return first, nil
 	}else if argument == 2 {
-		return second
+		return second, nil
 	}else if argument == 3 {
-		return third
+		return third, nil
 	}else {
 		next := first + second + third
 
@@ -85,8 +83,19 @@ func tribonacсiItero(argument int) int {
 			first = second
 			second = third
 			third = next
-			next = first + second + third // вычисляем следующий член последовательности
+
+			if second > (math.MaxUint64 - third) { // проверка на переполнение  second + third
+				return 0, ErrorOverflow
+			}
+			tmp = second + third
+
+			if first > (math.MaxUint64 - tmp) { // проверка на переполнение first + (second + third)
+				return 0, ErrorOverflow
+			}
+
+			next = first + tmp // вычисляем следующий член последовательности
 		}
-		return next
+
+		return next, nil
 	}
 }

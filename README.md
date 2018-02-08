@@ -2,7 +2,7 @@
 
 ## Overview
 
-Содержит **endpoint** вычисляющий n-й член [последовательности трибоначчи](https://ru.wikipedia.org/wiki/%D0%A7%D0%B8%D1%81%D0%BB%D0%B0_%D1%82%D1%80%D0%B8%D0%B1%D0%BE%D0%BD%D0%B0%D1%87%D1%87%D0%B8)
+Содержит **endpoint** вычисляющий n-й член [последовательности трибоначчи](https://oeis.org/A000073/list)
 
 ```http://```**servername:serverport**```/api/v1/openprovider/tribonachi/10```
 
@@ -10,15 +10,26 @@
 1. ```git clone https://github.com/iworksrc/openprovider-back```
 2. ```cd openprovider-back```
 3. ```go run main.go```
+4. test RESTapi
 
-### Check Endpoints
-Тестировать endpoints можно программой [Postman](https://www.getpostman.com/apps).
-Настройки endpoints для Postman находятся в файле *Openprovider.postman_collection.json*
+
 ## Docker
 
+1. ```git clone https://github.com/iworksrc/openprovider-back```
+2. ```cd openprovider-back```
+3. ```./build.sh```
+4. ```sudo docker run -p 8080:8080 -t openprovider-back openprovider-back:latest```
+5. test RESTapi
 
 ## Tests
+### Manual Test Endpoints
+Тестировать endpoints можно программой [Postman](https://www.getpostman.com/apps).
+Настройки endpoints для Postman находятся в файле *Openprovider.postman_collection.json*
+
+### UnitTests
 
 ## OpenAPI
 API version: 1.0.0
+
+Swagger used for generation skels
 
