@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"encoding/json"
 	"openprovider-back/go/models"
+	"math/big"
 )
 
 type Users struct {
@@ -46,7 +47,10 @@ func tribonacciThroughCache(argument int ) string {
 	//result := tribonacciRecursive(argument)
 	result := tribonacсiItero(argument)
 
+	//result := tribonacciRecursiveBig(argument)
+
 	return  strconv.Itoa(result)
+	//return  result.String()
 }
 
 func tribonacciRecursive(argument int) int {
@@ -56,7 +60,7 @@ func tribonacciRecursive(argument int) int {
 	}else if argument == 1{
 		return 0
 	} else if argument == 2{
-		return 0
+		return 1
 	} else if argument == 3{
 		return 1
 	} else{
@@ -66,7 +70,7 @@ func tribonacciRecursive(argument int) int {
 
 func tribonacсiItero(argument int) int {
 	var first = 0
-	var second = 0
+	var second = 1
 	var third = 1
 
 	if argument == 0 {
@@ -88,5 +92,25 @@ func tribonacсiItero(argument int) int {
 			next = first + second + third // вычисляем следующий член последовательности
 		}
 		return next
+	}
+}
+
+func tribonacciRecursiveBig(argument int) *big.Int {
+
+	if argument == 0 {
+		return new(big.Int).SetUint64(0)
+	}else if argument == 1{
+		return new(big.Int).SetUint64(0)
+	} else if argument == 2{
+		return new(big.Int).SetUint64(0)
+	} else if argument == 3{
+		return new(big.Int).SetUint64(1)
+	} else{
+		f := tribonacciRecursiveBig(argument - 1)
+		s := tribonacciRecursiveBig(argument - 2)
+		t := tribonacciRecursiveBig(argument - 3)
+		s.Add(s,t)
+		f.Add(f,s)
+		return f
 	}
 }
