@@ -32,7 +32,7 @@ func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		result, err := tribonacciThroughCache(argument)
+		result, err := TribonacciThroughCache(argument)
 		if err != nil {
 			w.WriteHeader(http.StatusRequestedRangeNotSatisfiable)
 			e := models.ErrorMessage{ Code: "416", Message: "Argument too big"}
@@ -52,7 +52,7 @@ func obtainArgument(path string) (int, error) {
 	return strconv.Atoi(lastFragment)
 }
 
-func tribonacciThroughCache(argument int ) (string, error) {
+func TribonacciThroughCache(argument int ) (string, error) {
 
 	//TODO some cache checking (не реализовано)
 
