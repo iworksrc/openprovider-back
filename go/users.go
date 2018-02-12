@@ -9,11 +9,15 @@ import (
 	"openprovider-back/go/models"
 	"math/big"
 	"errors"
+	"time"
+	"github.com/patrickmn/go-cache"
 )
 
 type Users struct {
 
 }
+
+var memoryCache = cache.New(5*time.Minute, 10*time.Minute)
 
 func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
@@ -45,15 +49,25 @@ func obtainArgument(path string) (int, error) {
 		err = errors.New("negative arguments not supported")
 	}
 
-	//if argument > 100000 {
-	//	err = errors.New("аргументы больше 100000 запрещены в демонстрационных целях")
-	//}
+	if argument > 1000000 {
+		err = errors.New("аргументы больше 1000000 запрещены в демонстрационных целях")
+	}
 
 	return argument, err
 }
 
 func TribonacciThroughCache(argument int ) string {
+
+	// сперва ищем в кеше
+	value, found := memoryCache.Get(strconv.Itoa(argument))
+	if found {
+		return value.(string)
+	}
+
+	// если кеш пуст - вычисляем и запоминаем
 	result := TribonacсiIteroBig(argument)
+	memoryCache.Set(strconv.Itoa(argument), result.String(), cache.DefaultExpiration)
+
 	return  result.String()
 }
 
