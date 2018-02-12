@@ -1,6 +1,6 @@
 package models
 
 type ErrorMessage struct {
-	Code string
+	Code    string
 	Message string
 }
