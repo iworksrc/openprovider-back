@@ -13,10 +13,6 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-type Users struct {
-
-}
-
 var memoryCache = cache.New(5*time.Minute, 10*time.Minute)
 
 func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
@@ -33,8 +29,7 @@ func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		result := TribonacciThroughCache(argument)
-
+		result := TribonacciThroughCache(argument, 100000)
 
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, result)
@@ -49,6 +44,7 @@ func obtainArgument(path string) (int, error) {
 		err = errors.New("negative arguments not supported")
 	}
 
+	// можно закомменторовать для стресс-тестов
 	if argument > 1000000 {
 		err = errors.New("аргументы больше 1000000 запрещены в демонстрационных целях")
 	}
@@ -56,17 +52,24 @@ func obtainArgument(path string) (int, error) {
 	return argument, err
 }
 
-func TribonacciThroughCache(argument int ) string {
+func TribonacciThroughCache(argument int, beginCachingValue int ) string {
 
-	// сперва ищем в кеше
-	value, found := memoryCache.Get(strconv.Itoa(argument))
-	if found {
-		return value.(string)
+	// если аргумент достаточно большой
+	if argument > beginCachingValue {
+		//ищем в кеше
+		value, found := memoryCache.Get(strconv.Itoa(argument))
+		if found {
+			return value.(string)
+		}
 	}
 
-	// если кеш пуст - вычисляем и запоминаем
+	//при малых значениях аргумента или пустом кеше - вычисляем
 	result := TribonacсiIteroBig(argument)
-	memoryCache.Set(strconv.Itoa(argument), result.String(), cache.DefaultExpiration)
+
+	// если аргумент достаточно большой - запоминаем
+	if argument > beginCachingValue {
+		memoryCache.Set(strconv.Itoa(argument), result.String(), cache.DefaultExpiration)
+	}
 
 	return  result.String()
 }
