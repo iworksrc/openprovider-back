@@ -17,7 +17,6 @@ type Users struct {
 func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
-
 		path := r.URL.Path
 
 		argument, err := obtainArgument(path)
@@ -42,31 +41,10 @@ func obtainArgument(path string) (int, error) {
 }
 
 func tribonacciThroughCache(argument int ) string {
-
-
-	//result := tribonacсiItero(argument)
-
-	//result := tribonacciRecursiveBig(argument)
 	result := tribonacсiIteroBig(argument)
-
-	//return  strconv.Itoa(result)
 	return  result.String()
 }
 
-func tribonacciRecursive(argument int) int {
-
-	if argument == 0 {
-		return 0
-	}else if argument == 1{
-		return 0
-	} else if argument == 2{
-		return 1
-	} else if argument == 3{
-		return 1
-	} else{
-		return  tribonacciRecursive(argument - 1) + tribonacciRecursive(argument - 2) + tribonacciRecursive(argument -3)
-	}
-}
 
 func tribonacсiIteroBig(argument int) *big.Int {
 	var first = new(big.Int).SetUint64(0)
@@ -92,25 +70,5 @@ func tribonacсiIteroBig(argument int) *big.Int {
 			next = first.Add(first, second.Add(second,third)) // вычисляем следующий член последовательности
 		}
 		return next
-	}
-}
-
-func tribonacciRecursiveBig(argument int) *big.Int {
-
-	if argument == 0 {
-		return new(big.Int).SetUint64(0)
-	}else if argument == 1{
-		return new(big.Int).SetUint64(0)
-	} else if argument == 2{
-		return new(big.Int).SetUint64(0)
-	} else if argument == 3{
-		return new(big.Int).SetUint64(1)
-	} else{
-		f := tribonacciRecursiveBig(argument - 1)
-		s := tribonacciRecursiveBig(argument - 2)
-		t := tribonacciRecursiveBig(argument - 3)
-		s.Add(s,t)
-		f.Add(f,s)
-		return f
 	}
 }
