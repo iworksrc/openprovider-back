@@ -35,16 +35,3 @@ func TestTribonacciValues(t *testing.T) {
 		}
 	}
 }
-
-//func TestTribonacciOverflow(t *testing.T)  {
-//	tooBigArgument := 76
-//	_, err := users.TribonacciThroughCache(tooBigArgument)
-//
-//	if err == nil {
-//		t.Error(
-//			"For", tooBigArgument,
-//			"expected", "overflow Uint64",
-//			"got", "as normal",
-//			)
-//	}
-//}
