@@ -43,14 +43,14 @@ func obtainArgument(path string) (int, error) {
 
 func tribonacciThroughCache(argument int ) string {
 
-	//==== выбрать нужный метод вычисления ====
-	//result := tribonacciRecursive(argument)
-	result := tribonacсiItero(argument)
+
+	//result := tribonacсiItero(argument)
 
 	//result := tribonacciRecursiveBig(argument)
+	result := tribonacсiIteroBig(argument)
 
-	return  strconv.Itoa(result)
-	//return  result.String()
+	//return  strconv.Itoa(result)
+	return  result.String()
 }
 
 func tribonacciRecursive(argument int) int {
@@ -68,13 +68,13 @@ func tribonacciRecursive(argument int) int {
 	}
 }
 
-func tribonacсiItero(argument int) int {
-	var first = 0
-	var second = 1
-	var third = 1
+func tribonacсiIteroBig(argument int) *big.Int {
+	var first = new(big.Int).SetUint64(0)
+	var second = new(big.Int).SetUint64(1)
+	var third = new(big.Int).SetUint64(1)
 
 	if argument == 0 {
-		return 0
+		return new(big.Int).SetUint64(0)
 	}else if argument == 1 {
 		return first
 	}else if argument == 2 {
@@ -82,14 +82,14 @@ func tribonacсiItero(argument int) int {
 	}else if argument == 3 {
 		return third
 	}else {
-		next := first + second + third
+		next := first.Add(first, second.Add(second,third))
 
 		stepsToDone := argument-3 // опускаем уже просуммированные члены
 		for i := 1; i < stepsToDone; i++ {
 			first = second
 			second = third
 			third = next
-			next = first + second + third // вычисляем следующий член последовательности
+			next = first.Add(first, second.Add(second,third)) // вычисляем следующий член последовательности
 		}
 		return next
 	}
