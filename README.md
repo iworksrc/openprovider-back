@@ -46,7 +46,7 @@
 1. ```git clone https://github.com/iworksrc/openprovider-back```
 2. ```cd openprovider-back```
 3. ```./build.sh```
-4. ```sudo docker run -p 8080:8080 -t openprovider-back openprovider-back:latest```
+4. ```./run_container.sh```
 5. test RESTapi
 
 ## Tests
