@@ -24,7 +24,7 @@ var tribonacciEtalonList = []string{
 func TestTribonacciValues(t *testing.T) {
 
 	for i := 0; i < len(tribonacciEtalonList); i++ {
-		result, err := users.TribonacciThroughCache(i)
+		result:= users.TribonacciThroughCache(i)
 
 		if result != tribonacciEtalonList[i] {
 			t.Error(
@@ -32,21 +32,19 @@ func TestTribonacciValues(t *testing.T) {
 				"expected", tribonacciEtalonList[i],
 				"got", result,
 			)
-		}else if err != nil {
-			t.Error("For", i, "unexpected overflow Error",)
 		}
 	}
 }
 
-func TestTribonacciOverflow(t *testing.T)  {
-	tooBigArgument := 76
-	_, err := users.TribonacciThroughCache(tooBigArgument)
-
-	if err == nil {
-		t.Error(
-			"For", tooBigArgument,
-			"expected", "overflow Uint64",
-			"got", "as normal",
-			)
-	}
-}
+//func TestTribonacciOverflow(t *testing.T)  {
+//	tooBigArgument := 76
+//	_, err := users.TribonacciThroughCache(tooBigArgument)
+//
+//	if err == nil {
+//		t.Error(
+//			"For", tooBigArgument,
+//			"expected", "overflow Uint64",
+//			"got", "as normal",
+//			)
+//	}
+//}
