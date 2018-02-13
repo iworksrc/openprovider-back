@@ -50,7 +50,7 @@
 						"openprovider"
 					]
 				},
-				"description": "get tribonachi value by arg"
+				"description": "just ping RESTapi"
 			},
 			"response": []
 		}
