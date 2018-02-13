@@ -13,8 +13,11 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
+// Кеш распложенный в оперативной памяти с заданными границами сброса по времени
 var memoryCache = cache.New(5*time.Minute, 10*time.Minute)
 
+// Entrypoint.
+// Обработка запроса к /api/v1/openprovider/tribonachi/{argument}
 func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
@@ -35,6 +38,12 @@ func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, result)
 }
 
+
+// Извлекает, валидирует и конвертирует в подходящую
+// форму аргумент из пути запроса. Отсекает отрицательные
+// значения и значения бльше миллиона (можно убрать проверку
+// на верхний предел). В случае не валидного преобразования
+// к int - так же возвращает ошибку
 func obtainArgument(path string) (int, error) {
 	fragments := strings.Split(path,"/")
 	lastFragment := fragments[len(fragments)-1]
@@ -52,10 +61,15 @@ func obtainArgument(path string) (int, error) {
 	return argument, err
 }
 
-func TribonacciThroughCache(argument int, beginCachingValue int ) string {
+
+// Возвращает значение n-го члена ряда Трибоаччи.
+// argument - член ряда Трибоаччи значение которого необходимо получить.
+// beginCacheLimit - значение, задающее начальный предел аргумента
+//   начиня с котрого вычисленные значения будут кешироваться
+func TribonacciThroughCache(argument int, beginCacheLimit int ) string {
 
 	// если аргумент достаточно большой
-	if argument > beginCachingValue {
+	if argument > beginCacheLimit {
 		//ищем в кеше
 		value, found := memoryCache.Get(strconv.Itoa(argument))
 		if found {
@@ -67,14 +81,22 @@ func TribonacciThroughCache(argument int, beginCachingValue int ) string {
 	result := TribonacсiIteroBig(argument)
 
 	// если аргумент достаточно большой - запоминаем
-	if argument > beginCachingValue {
+	if argument > beginCacheLimit {
 		memoryCache.Set(strconv.Itoa(argument), result.String(), cache.DefaultExpiration)
 	}
 
 	return  result.String()
 }
 
-
+// Вычисляет значение n-го члена ряда Трибоаччи.
+// Используется итеративный алгоритм вычисления.
+// Для хранения результатов вычисления используется
+// тип даных big.Int не ограничивающий размерность
+// (размер переменной типа big.Int ограничен
+// только размером оперативной памяти машины).
+// Как следствие функция может вычислять значения ряда
+// от достаточно  болших значений арумента
+// ( миллион и более) за приемлеме время.
 func TribonacсiIteroBig(argument int) *big.Int {
 	var zero = new(big.Int).SetUint64(0)
 	var first = new(big.Int).SetUint64(0)

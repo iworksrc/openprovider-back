@@ -60,6 +60,13 @@
 2. ```cd openprovider-back/tests```
 3. ```go test```
 
+## Documentation
+
+1. ```git clone https://github.com/iworksrc/openprovider-back```
+2. ```cd openprovider-back```
+3. ```./gen_docs.sh```
+4. Open in browser ``docs/index.html``
+ 
 ## OpenAPI
 API version: 1.0.0
 
