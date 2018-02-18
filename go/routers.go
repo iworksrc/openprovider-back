@@ -7,10 +7,10 @@ import (
 )
 
 
-// Name - Имя запроса.
-// Method - Http метод запроса (GET, POST, PUT, DELETE, ...)
-// Pattern - Entrypoint запроса (путь + аргументы)
-// HandlerFunc - Имя функции-бработчика запроса.
+// Name - Name of request.
+// Method - Http method of request (GET, POST, PUT, DELETE, ...)
+// Pattern - Entrypoint of request (path + args)
+// HandlerFunc - Function-handler name of request.
 type Route struct {
 	Name        string
 	Method      string
@@ -20,7 +20,7 @@ type Route struct {
 
 type Routes []Route
 
-// Обработчик Entrypoints.
+// Handler of Entrypoints.
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	for _, route := range routes {
@@ -38,13 +38,12 @@ func NewRouter() *mux.Router {
 	return router
 }
 
-// Entrypoint.
-// Обработка запроса к /api/v1/openprovider
+// Entrypoint /api/v1/openprovider
 func Index(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello Openprovider!")
 }
 
-// Достуные Enrypoints.
+// Available Enrypoints.
 var routes = Routes{
 	Route{
 		"Index",

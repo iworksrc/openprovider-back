@@ -149,13 +149,12 @@
 		
 			
 			
-			<h2 id="GetTribonacсiValue">func <a href="/src/target/users.go?s=492:556#L11">GetTribonacсiValue</a>
+			<h2 id="GetTribonacсiValue">func <a href="/src/target/users.go?s=350:414#L10">GetTribonacсiValue</a>
 				<a class="permalink" href="#GetTribonacсiValue">&#xb6;</a>
 			</h2>
 			<pre>func GetTribonacсiValue(w <a href="/pkg/net/http/">http</a>.<a href="/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="/pkg/net/http/">http</a>.<a href="/pkg/net/http/#Request">Request</a>)</pre>
 			<p>
-Entrypoint.
-Обработка запроса к /api/v1/openprovider/tribonachi/{argument}
+Entrypoint /api/v1/openprovider/tribonachi/{argument}
 </p>
 
 			
@@ -164,13 +163,12 @@ Entrypoint.
 		
 			
 			
-			<h2 id="Index">func <a href="/src/target/routers.go?s=921:971#L33">Index</a>
+			<h2 id="Index">func <a href="/src/target/routers.go?s=797:847#L32">Index</a>
 				<a class="permalink" href="#Index">&#xb6;</a>
 			</h2>
 			<pre>func Index(w <a href="/pkg/net/http/">http</a>.<a href="/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="/pkg/net/http/">http</a>.<a href="/pkg/net/http/#Request">Request</a>)</pre>
 			<p>
-Entrypoint.
-Обработка запроса к /api/v1/openprovider
+Entrypoint /api/v1/openprovider
 </p>
 
 			
@@ -179,12 +177,12 @@ Entrypoint.
 		
 			
 			
-			<h2 id="Logger">func <a href="/src/target/logger.go?s=134:191#L1">Logger</a>
+			<h2 id="Logger">func <a href="/src/target/logger.go?s=91:148#L1">Logger</a>
 				<a class="permalink" href="#Logger">&#xb6;</a>
 			</h2>
 			<pre>func Logger(inner <a href="/pkg/net/http/">http</a>.<a href="/pkg/net/http/#Handler">Handler</a>, name <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/net/http/">http</a>.<a href="/pkg/net/http/#Handler">Handler</a></pre>
 			<p>
-Логирование работы сервера в консоль.
+Server logging to console.
 </p>
 
 			
@@ -193,12 +191,12 @@ Entrypoint.
 		
 			
 			
-			<h2 id="NewRouter">func <a href="/src/target/routers.go?s=516:544#L14">NewRouter</a>
+			<h2 id="NewRouter">func <a href="/src/target/routers.go?s=433:461#L14">NewRouter</a>
 				<a class="permalink" href="#NewRouter">&#xb6;</a>
 			</h2>
 			<pre>func NewRouter() *<a href="/pkg/github.com/gorilla/mux/">mux</a>.<a href="/pkg/github.com/gorilla/mux/#Router">Router</a></pre>
 			<p>
-Обработчик Entrypoints.
+Handler of Entrypoints.
 </p>
 
 			
@@ -207,17 +205,16 @@ Entrypoint.
 		
 			
 			
-			<h2 id="TribonacciThroughCache">func <a href="/src/target/users.go?s=2491:2561#L59">TribonacciThroughCache</a>
+			<h2 id="TribonacciThroughCache">func <a href="/src/target/users.go?s=1921:1991#L58">TribonacciThroughCache</a>
 				<a class="permalink" href="#TribonacciThroughCache">&#xb6;</a>
 			</h2>
 			<pre>func TribonacciThroughCache(argument <a href="/pkg/builtin/#int">int</a>, beginCacheLimit <a href="/pkg/builtin/#int">int</a>) <a href="/pkg/builtin/#string">string</a></pre>
 			<p>
-Возвращает значение n-го члена ряда Трибоаччи.
-argument - член ряда Трибоаччи значение которого необходимо получить.
-beginCacheLimit - значение, задающее начальный предел аргумента
+Returns the value of the nth member of the Triboacci series.
+argument - is a member of the Triboacci series whose value is to be obtained.
+beginCacheLimit - value that specifies the initial limit of the argument
+starting with the calculated values will be cached
 </p>
-<pre>начиня с котрого вычисленные значения будут кешироваться
-</pre>
 
 			
 			
@@ -225,20 +222,20 @@ beginCacheLimit - значение, задающее начальный пред
 		
 			
 			
-			<h2 id="TribonacсiIteroBig">func <a href="/src/target/users.go?s=3946:3993#L90">TribonacсiIteroBig</a>
+			<h2 id="TribonacсiIteroBig">func <a href="/src/target/users.go?s=2957:3004#L89">TribonacсiIteroBig</a>
 				<a class="permalink" href="#TribonacсiIteroBig">&#xb6;</a>
 			</h2>
 			<pre>func TribonacсiIteroBig(argument <a href="/pkg/builtin/#int">int</a>) *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
 			<p>
-Вычисляет значение n-го члена ряда Трибоаччи.
-Используется итеративный алгоритм вычисления.
-Для хранения результатов вычисления используется
-тип даных big.Int не ограничивающий размерность
-(размер переменной типа big.Int ограничен
-только размером оперативной памяти машины).
-Как следствие функция может вычислять значения ряда
-от достаточно  болших значений арумента
-( миллион и более) за приемлеме время.
+Calculates the value of the nth member of the Triboacci series.
+An iterative calculation algorithm is used.
+To store the calculation results, use
+type of data big.Int is not a bounding dimension
+(the size of a variable of type big.Int is limited
+only the size of the machine&#39;s RAM).
+As a consequence, the function can calculate the values of the series
+from rather large values of the argument
+(one million or more) for acceptable time.
 </p>
 
 			
@@ -248,7 +245,7 @@ beginCacheLimit - значение, задающее начальный пред
 		
 			
 			
-			<h2 id="Route">type <a href="/src/target/routers.go?s=345:456#L4">Route</a>
+			<h2 id="Route">type <a href="/src/target/routers.go?s=272:383#L4">Route</a>
 				<a class="permalink" href="#Route">&#xb6;</a>
 			</h2>
 			<pre>type Route struct {
@@ -258,10 +255,10 @@ beginCacheLimit - значение, задающее начальный пред
     HandlerFunc <a href="/pkg/net/http/">http</a>.<a href="/pkg/net/http/#HandlerFunc">HandlerFunc</a>
 }</pre>
 			<p>
-Name - Имя запроса.&lt;br&gt;
-Method - Http метод запроса (GET, POST, PUT, DELETE, ...)&lt;br&gt;
-Pattern - Entrypoint запроса (путь + аргументы)&lt;br&gt;
-HandlerFunc - Имя функции-бработчика запроса.
+Name - Name of request.
+Method - Http method of request (GET, POST, PUT, DELETE, ...)
+Pattern - Entrypoint of request (path + args)
+HandlerFunc - Function-handler name of request.
 </p>
 
 
@@ -279,7 +276,7 @@ HandlerFunc - Имя функции-бработчика запроса.
 		
 			
 			
-			<h2 id="Routes">type <a href="/src/target/routers.go?s=458:477#L11">Routes</a>
+			<h2 id="Routes">type <a href="/src/target/routers.go?s=385:404#L11">Routes</a>
 				<a class="permalink" href="#Routes">&#xb6;</a>
 			</h2>
 			<pre>type Routes []<a href="#Route">Route</a></pre>
