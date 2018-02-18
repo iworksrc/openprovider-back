@@ -6,7 +6,6 @@ import (
 	"net/http"
 )
 
-
 // Name - Name of request.
 // Method - Http method of request (GET, POST, PUT, DELETE, ...)
 // Pattern - Entrypoint of request (path + args)

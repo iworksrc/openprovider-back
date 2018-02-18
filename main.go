@@ -1,9 +1,9 @@
 package main
 
 import (
-	sw "openprovider-back/go"
 	"log"
 	"net/http"
+	sw "openprovider-back/go"
 )
 
 func main() {

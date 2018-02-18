@@ -1,16 +1,16 @@
 package openprovider
 
 import (
-	"net/http"
-	"fmt"
-	"strings"
-	"strconv"
 	"encoding/json"
-	"openprovider-back/go/models"
-	"math/big"
 	"errors"
-	"time"
+	"fmt"
 	"github.com/patrickmn/go-cache"
+	"math/big"
+	"net/http"
+	"openprovider-back/go/models"
+	"strconv"
+	"strings"
+	"time"
 )
 
 // In-Memory cache with preset time-out limits
@@ -18,25 +18,24 @@ var memoryCache = cache.New(5*time.Minute, 10*time.Minute)
 
 // Entrypoint /api/v1/openprovider/tribonachi/{argument}
 func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
-		path := r.URL.Path
+	path := r.URL.Path
 
-		argument, err := obtainArgument(path)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			e := models.ErrorMessage{ Code: "400", Message: "Invalid argument: " + err.Error()}
-			errorMessage, _ := json.Marshal(e)
-			http.Error(w, string(errorMessage) , http.StatusBadRequest)
-			return
-		}
+	argument, err := obtainArgument(path)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		e := models.ErrorMessage{Code: "400", Message: "Invalid argument: " + err.Error()}
+		errorMessage, _ := json.Marshal(e)
+		http.Error(w, string(errorMessage), http.StatusBadRequest)
+		return
+	}
 
-		result := TribonacciThroughCache(argument, 100000)
+	result := TribonacciThroughCache(argument, 100000)
 
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, result)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, result)
 }
-
 
 // Extract, validate and convert to a suitable
 // form the argument from the query path. Detects negative
@@ -44,7 +43,7 @@ func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 // to the upper limit). In the case of non-valid transformation
 // to int - it also returns an error
 func obtainArgument(path string) (int, error) {
-	fragments := strings.Split(path,"/")
+	fragments := strings.Split(path, "/")
 	lastFragment := fragments[len(fragments)-1]
 	argument, err := strconv.Atoi(lastFragment)
 
@@ -60,12 +59,11 @@ func obtainArgument(path string) (int, error) {
 	return argument, err
 }
 
-
 // Returns the value of the nth member of the Triboacci series.
 // argument - is a member of the Triboacci series whose value is to be obtained.
 // beginCacheLimit - value that specifies the initial limit of the argument
 // starting with the calculated values will be cached
-func TribonacciThroughCache(argument int, beginCacheLimit int ) string {
+func TribonacciThroughCache(argument int, beginCacheLimit int) string {
 
 	// if the argument is large enough
 	if argument > beginCacheLimit {
@@ -84,7 +82,7 @@ func TribonacciThroughCache(argument int, beginCacheLimit int ) string {
 		memoryCache.Set(strconv.Itoa(argument), result.String(), cache.DefaultExpiration)
 	}
 
-	return  result.String()
+	return result.String()
 }
 
 // Calculates the value of the nth member of the Triboacci series.
@@ -104,15 +102,15 @@ func TribonacсiIteroBig(argument int) *big.Int {
 
 	if argument == 0 {
 		return zero
-	}else if argument == 1 {
+	} else if argument == 1 {
 		return first
-	}else if argument == 2 {
+	} else if argument == 2 {
 		return second
-	}else if argument == 3 {
+	} else if argument == 3 {
 		return third
-	}else {
+	} else {
 		next := new(big.Int).SetUint64(2)
-		stepsToDone := argument-3 // omit already summed terms
+		stepsToDone := argument - 3 // omit already summed terms
 
 		for i := 1; i < stepsToDone; i++ {
 
@@ -122,8 +120,8 @@ func TribonacсiIteroBig(argument int) *big.Int {
 			third = next
 
 			// summarize all three terms
-			sf := new(big.Int).Add(first,second)
-			tsf := new(big.Int).Add(sf,third)
+			sf := new(big.Int).Add(first, second)
+			tsf := new(big.Int).Add(sf, third)
 
 			next = tsf // remember
 		}
