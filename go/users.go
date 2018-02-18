@@ -13,11 +13,10 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-// Кеш распложенный в оперативной памяти с заданными границами сброса по времени
+// In-Memory cache with preset time-out limits
 var memoryCache = cache.New(5*time.Minute, 10*time.Minute)
 
-// Entrypoint.
-// Обработка запроса к /api/v1/openprovider/tribonachi/{argument}
+// Entrypoint /api/v1/openprovider/tribonachi/{argument}
 func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
@@ -39,11 +38,11 @@ func GetTribonacсiValue(w http.ResponseWriter, r *http.Request) {
 }
 
 
-// Извлекает, валидирует и конвертирует в подходящую
-// форму аргумент из пути запроса. Отсекает отрицательные
-// значения и значения бльше миллиона (можно убрать проверку
-// на верхний предел). В случае не валидного преобразования
-// к int - так же возвращает ошибку
+// Extract, validate and convert to a suitable
+// form the argument from the query path. Detects negative
+// values and values are more than a million (you can remove the check
+// to the upper limit). In the case of non-valid transformation
+// to int - it also returns an error
 func obtainArgument(path string) (int, error) {
 	fragments := strings.Split(path,"/")
 	lastFragment := fragments[len(fragments)-1]
@@ -53,34 +52,34 @@ func obtainArgument(path string) (int, error) {
 		err = errors.New("negative arguments not supported")
 	}
 
-	// можно закомменторовать для стресс-тестов
+	// can be commented out for stress tests
 	if argument > 1000000 {
-		err = errors.New("аргументы больше 1000000 запрещены в демонстрационных целях")
+		err = errors.New("arguments greater than 1,000,000 are banned for demonstration purposes")
 	}
 
 	return argument, err
 }
 
 
-// Возвращает значение n-го члена ряда Трибоаччи.
-// argument - член ряда Трибоаччи значение которого необходимо получить.
-// beginCacheLimit - значение, задающее начальный предел аргумента
-//   начиня с котрого вычисленные значения будут кешироваться
+// Returns the value of the nth member of the Triboacci series.
+// argument - is a member of the Triboacci series whose value is to be obtained.
+// beginCacheLimit - value that specifies the initial limit of the argument
+// starting with the calculated values will be cached
 func TribonacciThroughCache(argument int, beginCacheLimit int ) string {
 
-	// если аргумент достаточно большой
+	// if the argument is large enough
 	if argument > beginCacheLimit {
-		//ищем в кеше
+		// look in the cache
 		value, found := memoryCache.Get(strconv.Itoa(argument))
 		if found {
 			return value.(string)
 		}
 	}
 
-	//при малых значениях аргумента или пустом кеше - вычисляем
+	// for small values of the argument or empty cache - calculate
 	result := TribonacсiIteroBig(argument)
 
-	// если аргумент достаточно большой - запоминаем
+	// if the argument is large enough - remember
 	if argument > beginCacheLimit {
 		memoryCache.Set(strconv.Itoa(argument), result.String(), cache.DefaultExpiration)
 	}
@@ -88,15 +87,15 @@ func TribonacciThroughCache(argument int, beginCacheLimit int ) string {
 	return  result.String()
 }
 
-// Вычисляет значение n-го члена ряда Трибоаччи.
-// Используется итеративный алгоритм вычисления.
-// Для хранения результатов вычисления используется
-// тип даных big.Int не ограничивающий размерность
-// (размер переменной типа big.Int ограничен
-// только размером оперативной памяти машины).
-// Как следствие функция может вычислять значения ряда
-// от достаточно  болших значений арумента
-// ( миллион и более) за приемлеме время.
+// Calculates the value of the nth member of the Triboacci series.
+// An iterative calculation algorithm is used.
+// To store the calculation results, use
+// type of data big.Int is not a bounding dimension
+// (the size of a variable of type big.Int is limited
+// only the size of the machine's RAM).
+// As a consequence, the function can calculate the values of the series
+// from rather large values of the argument
+// (one million or more) for acceptable time.
 func TribonacсiIteroBig(argument int) *big.Int {
 	var zero = new(big.Int).SetUint64(0)
 	var first = new(big.Int).SetUint64(0)
@@ -113,20 +112,20 @@ func TribonacсiIteroBig(argument int) *big.Int {
 		return third
 	}else {
 		next := new(big.Int).SetUint64(2)
-		stepsToDone := argument-3 // опускаем уже просуммированные члены
+		stepsToDone := argument-3 // omit already summed terms
 
 		for i := 1; i < stepsToDone; i++ {
 
-			// смещаемся по последовательности на один шаг вперёд
+			// move along the sequence one step forward
 			first = second
 			second = third
 			third = next
 
-			// суммируем все три члена
+			// summarize all three terms
 			sf := new(big.Int).Add(first,second)
 			tsf := new(big.Int).Add(sf,third)
 
-			next = tsf // запоминаем
+			next = tsf // remember
 		}
 
 		return next
