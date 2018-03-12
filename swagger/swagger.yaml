@@ -1,0 +1,58 @@
+---
+swagger: "2.0"
+info:
+  description: "Openprovider API"
+  version: "1.0.0"
+  title: "Openprovider API"
+  contact:
+    email: "imail.for.iwork@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:5000"
+basePath: "/api/v1/openprovider"
+tags:
+- name: "users"
+  description: "Users common calls"
+schemes:
+- "http"
+- "https"
+paths:
+  /trbonachi/{argument}:
+    get:
+      tags:
+      - "users"
+      summary: "get tribonacсi value"
+      description: "get value of tribonacсi unction, n-item sequense"
+      operationId: "getTribonacсiValue"
+      consumes:
+      - "application/json"
+      - "application/xhtml+xml"
+      produces:
+      - "application/json"
+      - "application/xhtml+xml"
+      parameters:
+      - name: "argument"
+        in: "path"
+        description: "natural number as argument for tribonachi function"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "ok"
+          schema:
+            type: "integer"
+            format: "int64"
+        400:
+          description: "invalid argument"
+          schema:
+            $ref: "#/definitions/ErrorMessage"
+definitions:
+  ErrorMessage:
+    properties:
+      Code:
+        type: "string"
+        example: "400"
+      Message:
+        type: "string"
+        example: "invalid argument"
